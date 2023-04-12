@@ -7,7 +7,7 @@ import GamePage from "./pages/Game";
 
 const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
-  { path: "/game", element: <GamePage /> },
+  { path: "/:deckSize", element: <GamePage /> },
 ]);
 
 function App() {

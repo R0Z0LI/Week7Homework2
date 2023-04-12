@@ -1,10 +1,10 @@
 class Pokemon {
-  id: number;
+  pokemon: number;
   picture: string;
 
-  constructor(id: number) {
-    this.id = id;
-    this.picture = `../pictures/card-poke${id}.png`;
+  constructor(pokemon: number) {
+    this.pokemon = pokemon;
+    this.picture = `../pictures/card-poke${pokemon}.png`;
   }
 }
 

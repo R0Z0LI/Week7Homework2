@@ -7,17 +7,27 @@ import Pokemon from "../models/pokemon";
 
 function GamePage() {
   const navigate = useNavigate();
-
+  let location = useLocation().pathname;
+  const deckSize: number = +location.slice(1, 3) / 2;
   let pokemons = [];
+  let choosenPokemons = [];
 
   for (let i = 0; i < 10; i++) {
     pokemons.push(new Pokemon(i + 1));
   }
 
-  console.log(pokemons);
+  pokemons.sort(() => Math.random() - 0.5);
+
   function backClickHandler() {
     navigate(-1);
   }
+
+  for (let i = 0; i < deckSize; i++) {
+    choosenPokemons.push(pokemons[i]);
+    choosenPokemons.push(pokemons[i]);
+  }
+  choosenPokemons.sort(() => Math.random() - 0.5);
+
   return (
     <div
       className="h-screen flex flex-col justify-center items-center"
@@ -29,7 +39,7 @@ function GamePage() {
         </button>
         <StartGame />
         <Stats />
-        <PokemonList />
+        <PokemonList items={choosenPokemons} />
       </div>
     </div>
   );
