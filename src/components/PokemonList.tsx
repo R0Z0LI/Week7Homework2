@@ -11,9 +11,7 @@ const PokemonList: React.FC<{ items: Pokemon[] }> = (props) => {
 
   const onSecondClickHandler = (pokemonId: number, id: number) => {
     setPrevId(id);
-    console.log(prevId);
-    console.log(id);
-    if (id !== prevId) {
+    if (id !== prevId || clickCounter === 2) {
       if (prevPokemonId !== null && prevPokemonId !== pokemonId) {
         setClickCounter(clickCounter - 1);
         setTimeout(() => {
@@ -33,8 +31,6 @@ const PokemonList: React.FC<{ items: Pokemon[] }> = (props) => {
       }
     }
   };
-
-  //console.log(clickCounter);
 
   return (
     <ul className="flex flex-wrap">

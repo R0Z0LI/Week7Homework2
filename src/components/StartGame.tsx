@@ -1,10 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 
 function StartGame() {
   const [deckSize, setDeckSize] = useState("");
+  const navigate = useNavigate();
+
   const onSelectedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setDeckSize(event.target.value);
+  };
+  const onClickHandler = () => {
+    navigate(`/${deckSize}`, { replace: true });
   };
   return (
     <div>
@@ -17,7 +22,7 @@ function StartGame() {
         <option value="18">18</option>
         <option value="20">20</option>
       </select>
-      <Link to={deckSize}>START NEW GAME</Link>
+      <button onClick={() => onClickHandler()}>START NEW GAME</button>
     </div>
   );
 }

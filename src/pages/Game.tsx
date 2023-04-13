@@ -1,12 +1,11 @@
 import background from "../pictures/background-game.png";
 import StartGame from "../components/StartGame";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import Stats from "../components/Stats";
 import PokemonList from "../components/PokemonList";
 import Pokemon from "../models/pokemon";
 
 function GamePage() {
-  const navigate = useNavigate();
   let location = useLocation().pathname;
   const deckSize: number = +location.slice(1, 3) / 2;
   let pokemons = [];
@@ -18,9 +17,7 @@ function GamePage() {
 
   pokemons.sort(() => Math.random() - 0.5);
 
-  function backClickHandler() {
-    navigate(-1);
-  }
+  const onRestartHandler = () => {};
 
   for (let i = 0; i < deckSize; i++) {
     choosenPokemons.push(pokemons[i]);
@@ -34,11 +31,11 @@ function GamePage() {
       style={{ backgroundImage: `url(${background})`, backgroundSize: "cover" }}
     >
       <div>
-        <button onClick={backClickHandler} className="p-3 shadow-lg m-5">
+        <Link to={"/"} className="p-3 shadow-lg m-5">
           Menu
-        </button>
+        </Link>
         <StartGame />
-        <Stats />
+        <Stats onRestart={onRestartHandler} />
         <PokemonList items={choosenPokemons} />
       </div>
     </div>
