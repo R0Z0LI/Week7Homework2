@@ -35,6 +35,7 @@ const PokemonItem: React.FC<{
   picture: string;
   pokemoneId: number;
   flip: boolean;
+  counter: number;
   onSecondClick: (id: number) => void;
 }> = (props) => {
   const [clicked, setClicked] = useState(false);
@@ -44,6 +45,7 @@ const PokemonItem: React.FC<{
     setClicked(true);
     setEveryClick(1);
   };
+  const isMatched = props.pokemoneId === props.prevId;
   useEffect(() => {
     if (everyClick === 1) {
       props.onSecondClick(props.pokemoneId);
@@ -51,7 +53,6 @@ const PokemonItem: React.FC<{
     }
   }, [everyClick]);
   const pictureSource = pictureMap[props.pokemoneId];
-  const isMatched = props.pokemoneId === props.prevId;
 
   useEffect(() => {
     if (!isMatched) {
@@ -59,11 +60,8 @@ const PokemonItem: React.FC<{
     }
   }, [props.flip]);
 
-  console.log(clicked);
-  console.log(props.flip);
-
   return (
-    <li onClick={onClickHandler}>
+    <li onClick={props.counter === 0 ? undefined : onClickHandler}>
       {!clicked && props.flip && <img src={back} alt="PokemonPic" />}
       {!clicked && !props.flip && <img src={back} alt="PokemonPic" />}
       {clicked && !props.flip && <img src={pictureSource} alt="PokemonPic" />}
