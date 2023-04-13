@@ -22,10 +22,17 @@ const PokemonList: React.FC<{
     setWin(false);
   }, [props.items]);
 
-  console.log(pokemonIds);
   const onSecondClickHandler = (pokemonId: number, id: number) => {
-    setPrevId(id);
-    if (id !== prevId || clickCounter === 2) {
+    let inPlay = false;
+    console.log(prevId);
+    console.log(id);
+    for (let i = 0; i < pokemonIds.length; i++) {
+      if (pokemonIds[i] === pokemonId) {
+        inPlay = true;
+      }
+    }
+    if ((id !== prevId || clickCounter === 2) && inPlay) {
+      setPrevId(id);
       if (prevPokemonId !== null && prevPokemonId !== pokemonId) {
         setClickCounter(clickCounter - 1);
         setTimeout(() => {
@@ -33,7 +40,7 @@ const PokemonList: React.FC<{
           setPrevPokemonId(null);
           setClickCounter(2);
           setTries(tries + 1);
-        }, 1000);
+        }, 500);
       } else {
         setFlipBack(false);
         setPrevPokemonId(pokemonId);
@@ -54,6 +61,8 @@ const PokemonList: React.FC<{
 
   useEffect(() => {
     if (pokemonIds.length === 0) {
+      setPrevPokemonId(null);
+      setPrevId(null);
       setWin(true);
     }
   }, [pokemonIds]);

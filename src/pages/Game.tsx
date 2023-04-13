@@ -31,7 +31,7 @@ function GamePage() {
     newChosenPokemons.sort(() => Math.random() - 0.5);
     setChosenPokemons(newChosenPokemons);
     setTriesCounter(0);
-  }, [deckSize]);
+  }, [deckSize, restart]);
 
   //console.log(chosenPokemons);
   const onRestartHandler = () => {
