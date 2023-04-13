@@ -6,17 +6,21 @@ const PokemonList: React.FC<{
   items: Pokemon[];
   restart: boolean;
   onRestartCallback: () => void;
-  tries: () => void;
+  tries: (counter: number) => void;
 }> = (props) => {
   const [clickCounter, setClickCounter] = useState(2);
   const [flipBack, setFlipBack] = useState(false);
+  const [win, setWin] = useState(false);
+  const [matchedId, setMatchedId] = useState(0);
+  const [tries, setTries] = useState(0);
   const [prevPokemonId, setPrevPokemonId] = useState<number | null>(null);
   const [prevId, setPrevId] = useState<number | null>(null);
-  const [matchedId, setMatchedId] = useState(0);
-  const [win, setWin] = useState(false);
-  const [pokemonIds, setPokemonIds] = useState<number[]>(
-    props.items.map((item) => item.pokemon)
-  );
+  const [pokemonIds, setPokemonIds] = useState<number[]>(() => {
+    if (props.items.length > 0) {
+      return props.items.map((item) => item.pokemon);
+    }
+    return [];
+  });
 
   const onSecondClickHandler = (pokemonId: number, id: number) => {
     setPrevId(id);
@@ -27,7 +31,7 @@ const PokemonList: React.FC<{
           setFlipBack(true);
           setPrevPokemonId(null);
           setClickCounter(2);
-          //props.tries();
+          setTries(tries + 1);
         }, 1000);
       } else {
         setFlipBack(false);
@@ -44,6 +48,10 @@ const PokemonList: React.FC<{
   };
 
   useEffect(() => {
+    props.tries(tries);
+  }, [tries]);
+
+  useEffect(() => {
     if (pokemonIds.length === 0) {
       setWin(true);
     }
@@ -51,7 +59,6 @@ const PokemonList: React.FC<{
 
   useEffect(() => {
     if (props.restart === true) {
-      console.log("restart");
       setClickCounter(2);
       setFlipBack(false);
       setPrevPokemonId(null);

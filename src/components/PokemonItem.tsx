@@ -75,8 +75,7 @@ const PokemonItem: React.FC<{
   }, [props.flip]);
 
   const condition = matchedPokemon || (clicked && !props.flip);
-  //console.log(`${props.id} ${condition} ${clicked} ${props.flip}`);
-  //console.log(props.pokemoneId);
+
   return (
     <li onClick={props.counter === 0 ? undefined : onClickHandler}>
       {!clicked && props.flip && !matchedPokemon && (

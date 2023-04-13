@@ -4,42 +4,49 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import Stats from "../components/Stats";
 import PokemonList from "../components/PokemonList";
 import Pokemon from "../models/pokemon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function GamePage() {
   let location = useLocation().pathname;
   const [restart, setRestart] = useState(false);
   const [triesCounter, setTriesCounter] = useState(0);
   const deckSize: number = +location.slice(1, 3) / 2;
-  let pokemons = [];
-  let choosenPokemons = [];
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [chosenPokemons, setChosenPokemons] = useState<Array<Pokemon>>(
+    Array(deckSize * 2).fill(new Pokemon(0))
+  );
 
-  for (let i = 0; i < 10; i++) {
-    pokemons.push(new Pokemon(i + 1));
-  }
+  useEffect(() => {
+    const newPokemons: Pokemon[] = [];
+    for (let i = 0; i < 10; i++) {
+      newPokemons.push(new Pokemon(i + 1));
+    }
+    newPokemons.sort(() => Math.random() - 0.5);
+    setPokemons(newPokemons);
 
-  pokemons.sort(() => Math.random() - 0.5);
+    const newChosenPokemons: Pokemon[] = [];
 
+    for (let i = 0; i < deckSize; i++) {
+      newChosenPokemons.push(newPokemons[i]);
+      newChosenPokemons.push(newPokemons[i]);
+    }
+    newChosenPokemons.sort(() => Math.random() - 0.5);
+    setChosenPokemons(newChosenPokemons);
+  }, [deckSize]);
+
+  //console.log(chosenPokemons);
   const onRestartHandler = () => {
     setTriesCounter(0);
     setRestart(true);
   };
 
   const onRestartCallbackHandler = () => {
-    console.log("restart");
     setRestart(false);
   };
 
-  const onTriesCounterHandler = () => {
-    setTriesCounter((triesCounter) => triesCounter + 1);
+  const onTriesCounterHandler = (counter: number) => {
+    setTriesCounter(counter);
   };
-  console.log(triesCounter);
-
-  for (let i = 0; i < deckSize; i++) {
-    choosenPokemons.push(pokemons[i]);
-    choosenPokemons.push(pokemons[i]);
-  }
-  choosenPokemons.sort(() => Math.random() - 0.5);
 
   return (
     <div
@@ -53,7 +60,7 @@ function GamePage() {
         <StartGame />
         <Stats onRestart={onRestartHandler} counter={triesCounter} />
         <PokemonList
-          items={choosenPokemons}
+          items={chosenPokemons}
           restart={restart}
           onRestartCallback={onRestartCallbackHandler}
           tries={onTriesCounterHandler}
