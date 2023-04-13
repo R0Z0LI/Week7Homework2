@@ -11,7 +11,6 @@ function GamePage() {
   const [restart, setRestart] = useState(false);
   const [triesCounter, setTriesCounter] = useState(0);
   const deckSize: number = +location.slice(1, 3) / 2;
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [chosenPokemons, setChosenPokemons] = useState<Array<Pokemon>>(
     Array(deckSize * 2).fill(new Pokemon(0))
   );
@@ -22,7 +21,6 @@ function GamePage() {
       newPokemons.push(new Pokemon(i + 1));
     }
     newPokemons.sort(() => Math.random() - 0.5);
-    setPokemons(newPokemons);
 
     const newChosenPokemons: Pokemon[] = [];
 
@@ -32,6 +30,7 @@ function GamePage() {
     }
     newChosenPokemons.sort(() => Math.random() - 0.5);
     setChosenPokemons(newChosenPokemons);
+    setTriesCounter(0);
   }, [deckSize]);
 
   //console.log(chosenPokemons);

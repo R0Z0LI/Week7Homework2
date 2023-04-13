@@ -15,13 +15,14 @@ const PokemonList: React.FC<{
   const [tries, setTries] = useState(0);
   const [prevPokemonId, setPrevPokemonId] = useState<number | null>(null);
   const [prevId, setPrevId] = useState<number | null>(null);
-  const [pokemonIds, setPokemonIds] = useState<number[]>(() => {
-    if (props.items.length > 0) {
-      return props.items.map((item) => item.pokemon);
-    }
-    return [];
-  });
+  const [pokemonIds, setPokemonIds] = useState<number[]>([]);
 
+  useEffect(() => {
+    setPokemonIds(props.items.map((item) => item.pokemon));
+    setWin(false);
+  }, [props.items]);
+
+  console.log(pokemonIds);
   const onSecondClickHandler = (pokemonId: number, id: number) => {
     setPrevId(id);
     if (id !== prevId || clickCounter === 2) {
@@ -65,6 +66,7 @@ const PokemonList: React.FC<{
       setPrevId(null);
       setMatchedId(0);
       setWin(false);
+      setTries(0);
     }
     props.onRestartCallback();
   }, [props.restart]);
