@@ -5,25 +5,31 @@ import { useState, useEffect } from "react";
 const PokemonList: React.FC<{ items: Pokemon[] }> = (props) => {
   const [clickCounter, setClickCounter] = useState(2);
   const [flipBack, setFlipBack] = useState(false);
+  const [prevPokemonId, setPrevPokemonId] = useState<number | null>(null);
   const [prevId, setPrevId] = useState<number | null>(null);
   const [matchedId, setMatchedId] = useState(0);
 
-  const onSecondClickHandler = (id: number) => {
-    if (prevId !== null && prevId !== id) {
-      setClickCounter(clickCounter - 1);
-      setTimeout(() => {
-        setFlipBack(true);
-        setPrevId(null);
-        setClickCounter(2);
-      }, 1000);
-    } else {
-      setFlipBack(false);
-      setPrevId(id);
-      setClickCounter(clickCounter - 1);
-      if (id === prevId) {
-        setMatchedId(id);
-        setClickCounter(2);
-        setPrevId(null);
+  const onSecondClickHandler = (pokemonId: number, id: number) => {
+    setPrevId(id);
+    console.log(prevId);
+    console.log(id);
+    if (id !== prevId) {
+      if (prevPokemonId !== null && prevPokemonId !== pokemonId) {
+        setClickCounter(clickCounter - 1);
+        setTimeout(() => {
+          setFlipBack(true);
+          setPrevPokemonId(null);
+          setClickCounter(2);
+        }, 1000);
+      } else {
+        setFlipBack(false);
+        setPrevPokemonId(pokemonId);
+        setClickCounter(clickCounter - 1);
+        if (pokemonId === prevPokemonId) {
+          setMatchedId(pokemonId);
+          setClickCounter(2);
+          setPrevPokemonId(null);
+        }
       }
     }
   };
@@ -36,7 +42,7 @@ const PokemonList: React.FC<{ items: Pokemon[] }> = (props) => {
         <PokemonItem
           key={index}
           id={index}
-          prevId={prevId}
+          prevId={prevPokemonId}
           picture={item.picture}
           pokemoneId={item.pokemon}
           flip={flipBack}
