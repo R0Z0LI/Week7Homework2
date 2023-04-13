@@ -9,6 +9,7 @@ import { useState } from "react";
 function GamePage() {
   let location = useLocation().pathname;
   const [restart, setRestart] = useState(false);
+  const [triesCounter, setTriesCounter] = useState(0);
   const deckSize: number = +location.slice(1, 3) / 2;
   let pokemons = [];
   let choosenPokemons = [];
@@ -20,12 +21,19 @@ function GamePage() {
   pokemons.sort(() => Math.random() - 0.5);
 
   const onRestartHandler = () => {
+    setTriesCounter(0);
     setRestart(true);
   };
 
   const onRestartCallbackHandler = () => {
+    console.log("restart");
     setRestart(false);
   };
+
+  const onTriesCounterHandler = () => {
+    setTriesCounter((triesCounter) => triesCounter + 1);
+  };
+  console.log(triesCounter);
 
   for (let i = 0; i < deckSize; i++) {
     choosenPokemons.push(pokemons[i]);
@@ -43,11 +51,12 @@ function GamePage() {
           Menu
         </Link>
         <StartGame />
-        <Stats onRestart={onRestartHandler} />
+        <Stats onRestart={onRestartHandler} counter={triesCounter} />
         <PokemonList
           items={choosenPokemons}
           restart={restart}
           onRestartCallback={onRestartCallbackHandler}
+          tries={onTriesCounterHandler}
         />
       </div>
     </div>
