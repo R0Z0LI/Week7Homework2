@@ -6,6 +6,7 @@ const PokemonList: React.FC<{ items: Pokemon[] }> = (props) => {
   const [clickCounter, setClickCounter] = useState(2);
   const [flipBack, setFlipBack] = useState(false);
   const [prevId, setPrevId] = useState<number | null>(null);
+  const [matchedId, setMatchedId] = useState(0);
 
   const onSecondClickHandler = (id: number) => {
     if (prevId !== null && prevId !== id) {
@@ -20,15 +21,14 @@ const PokemonList: React.FC<{ items: Pokemon[] }> = (props) => {
       setPrevId(id);
       setClickCounter(clickCounter - 1);
       if (id === prevId) {
-        console.log("hey");
+        setMatchedId(id);
         setClickCounter(2);
         setPrevId(null);
       }
     }
   };
 
-  //console.log(prevId);
-  console.log(clickCounter);
+  //console.log(clickCounter);
 
   return (
     <ul className="flex flex-wrap">
@@ -41,6 +41,7 @@ const PokemonList: React.FC<{ items: Pokemon[] }> = (props) => {
           pokemoneId={item.pokemon}
           flip={flipBack}
           counter={clickCounter}
+          matchedId={matchedId}
           onSecondClick={onSecondClickHandler}
         />
       ))}
