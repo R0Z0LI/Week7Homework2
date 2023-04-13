@@ -37,6 +37,7 @@ const PokemonItem: React.FC<{
   flip: boolean;
   counter: number;
   matchedId: number;
+  restart: boolean;
   onSecondClick: (pokemonId: number, id: number) => void;
 }> = (props) => {
   const [clicked, setClicked] = useState(false);
@@ -46,6 +47,13 @@ const PokemonItem: React.FC<{
     setClicked(true);
     setEveryClick(1);
   };
+  useEffect(() => {
+    if (props.restart === true) {
+      setClicked(false);
+      setEveryClick(0);
+      setMatchedPokemon(false);
+    }
+  }, [props.restart]);
   useEffect(() => {
     if (props.matchedId === props.pokemoneId) {
       setMatchedPokemon(true);

@@ -2,7 +2,11 @@ import PokemonItem from "./PokemonItem";
 import Pokemon from "../models/pokemon";
 import { useState, useEffect } from "react";
 
-const PokemonList: React.FC<{ items: Pokemon[] }> = (props) => {
+const PokemonList: React.FC<{
+  items: Pokemon[];
+  restart: boolean;
+  onRestartCallback: () => void;
+}> = (props) => {
   const [clickCounter, setClickCounter] = useState(2);
   const [flipBack, setFlipBack] = useState(false);
   const [prevPokemonId, setPrevPokemonId] = useState<number | null>(null);
@@ -31,6 +35,16 @@ const PokemonList: React.FC<{ items: Pokemon[] }> = (props) => {
       }
     }
   };
+  useEffect(() => {
+    if (props.restart === true) {
+      setClickCounter(2);
+      setFlipBack(false);
+      setPrevPokemonId(null);
+      setPrevId(null);
+      setMatchedId(0);
+    }
+    props.onRestartCallback();
+  }, [props.restart]);
 
   return (
     <ul className="flex flex-wrap">
@@ -44,6 +58,7 @@ const PokemonList: React.FC<{ items: Pokemon[] }> = (props) => {
           flip={flipBack}
           counter={clickCounter}
           matchedId={matchedId}
+          restart={props.restart}
           onSecondClick={onSecondClickHandler}
         />
       ))}

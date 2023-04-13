@@ -5,6 +5,7 @@ const Stats: React.FC<{ onRestart: () => void }> = (props) => {
   const navigate = useNavigate();
 
   const onClickHandler = () => {
+    props.onRestart();
     navigate("");
   };
   return (
