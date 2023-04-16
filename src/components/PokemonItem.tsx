@@ -83,7 +83,7 @@ const PokemonItem: React.FC<{
 
   return (
     <li
-      className="p-1 w-48"
+      className="p-2 w-48"
       onClick={props.counter === 0 ? undefined : onClickHandler}
     >
       {!clicked && props.flip && !matchedPokemon && (

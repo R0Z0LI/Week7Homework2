@@ -34,7 +34,7 @@ function GamePage() {
     setChosenPokemons(newChosenPokemons);
     setWin(false);
     setTriesCounter(0);
-  }, [deckSize, restart]);
+  }, [deckSize, restart, newGame]);
 
   const onRestartHandler = () => {
     setTriesCounter(0);
