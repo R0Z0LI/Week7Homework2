@@ -84,6 +84,7 @@ function GamePage() {
             onRestart={onRestartHandler}
             counter={triesCounter}
             win={win}
+            game={newGame}
           />
           <PokemonList
             items={chosenPokemons}

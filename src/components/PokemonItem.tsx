@@ -63,8 +63,6 @@ const PokemonItem: React.FC<{
     }
   }, [props.matchedId]);
 
-  const isMatched = props.pokemoneId === props.prevId;
-
   useEffect(() => {
     if (everyClick === 1) {
       props.onSecondClick(props.pokemoneId, props.id);
@@ -75,6 +73,7 @@ const PokemonItem: React.FC<{
   const pictureSource = pictureMap[props.pokemoneId];
 
   useEffect(() => {
+    const isMatched = props.pokemoneId === props.prevId;
     if (!isMatched) {
       setClicked(false);
     }

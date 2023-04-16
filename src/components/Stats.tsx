@@ -5,24 +5,27 @@ const Stats: React.FC<{
   onRestart: () => void;
   counter: number;
   win: boolean;
+  game: boolean;
 }> = (props) => {
   const navigate = useNavigate();
-  const [bestScore, setBestScore] = useState<number>(0);
-  useEffect(() => {
+  const [newBestScore, setNewBestScore] = useState(false);
+  const [bestScore, setBestScore] = useState<number>(() => {
     const score = localStorage.getItem("bestScore");
-    if (score !== null) {
-      setBestScore(parseInt(score));
-    }
-  }, []);
+    return score !== null ? parseInt(score) : 0;
+  });
 
   useEffect(() => {
-    if (bestScore === 0 || bestScore > props.counter) {
+    if (bestScore === 0 || (bestScore > props.counter && props.counter !== 0)) {
       setBestScore(props.counter);
+      setNewBestScore(true);
     }
   }, [props.win]);
 
   useEffect(() => {
-    localStorage.setItem("bestScore", bestScore.toString());
+    if (newBestScore === true) {
+      setNewBestScore(false);
+      localStorage.setItem("bestScore", bestScore.toString());
+    }
   }, [bestScore]);
 
   const onClickHandler = () => {
