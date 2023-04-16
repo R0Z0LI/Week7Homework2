@@ -5,8 +5,10 @@ import { useState, useEffect } from "react";
 const PokemonList: React.FC<{
   items: Pokemon[];
   restart: boolean;
+  game: boolean;
   onRestartCallback: () => void;
   tries: (counter: number) => void;
+  win: (win: boolean) => void;
 }> = (props) => {
   const [clickCounter, setClickCounter] = useState(2);
   const [flipBack, setFlipBack] = useState(false);
@@ -24,8 +26,6 @@ const PokemonList: React.FC<{
 
   const onSecondClickHandler = (pokemonId: number, id: number) => {
     let inPlay = false;
-    console.log(prevId);
-    console.log(id);
     for (let i = 0; i < pokemonIds.length; i++) {
       if (pokemonIds[i] === pokemonId) {
         inPlay = true;
@@ -68,7 +68,14 @@ const PokemonList: React.FC<{
   }, [pokemonIds]);
 
   useEffect(() => {
-    if (props.restart === true) {
+    if (pokemonIds.length === 0) {
+      props.win(win);
+      setTries(0);
+    }
+  }, [win]);
+
+  useEffect(() => {
+    if (props.restart === true || props.game === true) {
       setClickCounter(2);
       setFlipBack(false);
       setPrevPokemonId(null);
@@ -78,12 +85,12 @@ const PokemonList: React.FC<{
       setTries(0);
     }
     props.onRestartCallback();
-  }, [props.restart]);
+  }, [props.restart, props.game]);
 
   return (
     <div>
       {!win && (
-        <ul className="flex flex-wrap">
+        <ul className="flex flex-wrap justify-center">
           {props.items.map((item, index) => (
             <PokemonItem
               key={index}
@@ -95,6 +102,8 @@ const PokemonList: React.FC<{
               counter={clickCounter}
               matchedId={matchedId}
               restart={props.restart}
+              win={win}
+              game={props.game}
               onSecondClick={onSecondClickHandler}
             />
           ))}

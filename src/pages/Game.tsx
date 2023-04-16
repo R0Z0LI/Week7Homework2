@@ -10,6 +10,8 @@ function GamePage() {
   let location = useLocation().pathname;
   const [restart, setRestart] = useState(false);
   const [triesCounter, setTriesCounter] = useState(0);
+  const [win, setWin] = useState(false);
+  const [newGame, setNewGame] = useState(false);
   const deckSize: number = +location.slice(1, 3) / 2;
   const [chosenPokemons, setChosenPokemons] = useState<Array<Pokemon>>(
     Array(deckSize * 2).fill(new Pokemon(0))
@@ -30,12 +32,13 @@ function GamePage() {
     }
     newChosenPokemons.sort(() => Math.random() - 0.5);
     setChosenPokemons(newChosenPokemons);
+    setWin(false);
     setTriesCounter(0);
   }, [deckSize, restart]);
 
-  //console.log(chosenPokemons);
   const onRestartHandler = () => {
     setTriesCounter(0);
+    setWin(false);
     setRestart(true);
   };
 
@@ -47,23 +50,50 @@ function GamePage() {
     setTriesCounter(counter);
   };
 
+  const onWinHandler = (won: boolean) => {
+    if (won === true) {
+      setWin(true);
+      //setWin(false);
+    }
+  };
+
+  const onNewgameHandler = () => {
+    setNewGame(true);
+  };
+
   return (
-    <div
-      className="h-screen flex flex-col justify-center items-center"
-      style={{ backgroundImage: `url(${background})`, backgroundSize: "cover" }}
-    >
-      <div>
-        <Link to={"/"} className="p-3 shadow-lg m-5">
-          Menu
-        </Link>
-        <StartGame />
-        <Stats onRestart={onRestartHandler} counter={triesCounter} />
-        <PokemonList
-          items={chosenPokemons}
-          restart={restart}
-          onRestartCallback={onRestartCallbackHandler}
-          tries={onTriesCounterHandler}
-        />
+    <div>
+      <div className="flex justify-center flex-col">
+        <div className="bg-sky-900 flex justify-center">
+          <Link
+            to={"/"}
+            className="lg:p-2 lg:m-2 p-1 m-1 rounded-lg bg-yellow-300 italic font-bold"
+          >
+            Home
+          </Link>
+          <StartGame onNewGame={onNewgameHandler} />
+        </div>
+        <div
+          className="h-screen flex flex-col lg:pl-48 lg:pr-48"
+          style={{
+            backgroundImage: `url(${background})`,
+            backgroundSize: "cover",
+          }}
+        >
+          <Stats
+            onRestart={onRestartHandler}
+            counter={triesCounter}
+            win={win}
+          />
+          <PokemonList
+            items={chosenPokemons}
+            restart={restart}
+            game={newGame}
+            onRestartCallback={onRestartCallbackHandler}
+            tries={onTriesCounterHandler}
+            win={onWinHandler}
+          />
+        </div>
       </div>
     </div>
   );
