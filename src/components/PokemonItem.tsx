@@ -92,7 +92,12 @@ const PokemonItem: React.FC<{
       {!clicked && !props.flip && !matchedPokemon && (
         <img src={back} alt="PokemonPic" />
       )}
-      {condition && <img src={pictureSource} alt="PokemonPic" />}
+      {condition && !matchedPokemon && (
+        <img src={pictureSource} alt="PokemonPic" />
+      )}
+      {condition && matchedPokemon && (
+        <img src={pictureSource} className="opacity-50" alt="PokemonPic" />
+      )}
     </li>
   );
 };
